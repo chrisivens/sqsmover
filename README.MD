@@ -10,49 +10,12 @@ were successfully un-queued to the destination.
 * Progress indicator.
 * Queue name resolution. For ease of use, you only need to provide a queue name and not the full `arn` address. 
 
-## Installation
+## Building
 
-On macOS, Linux, or OpenBSD run the following:
-
-```
-curl https://raw.githubusercontent.com/mercury2269/sqsmover/master/install.sh | sh
-```
-
-Note that you may need to run the `sudo` version below, or alternatively chown `/usr/local`:
-```
-curl https://raw.githubusercontent.com/mercury2269/sqsmover/master/install.sh | sudo sh
-```
-
-On Windows download [binary](https://github.com/mercury2269/sqsmover/releases).
-
-After downloading, rename binary file 'sqsmover.exe', then add to PATH.
-
-## Configuring Credentials
-Before using the sqsmover ensure that you've configured AWS credentials. The best
-way to configure credentials on a development machine is to create the credentials file
-`~/.aws/credentials`, which might look like:
+SQSMover can be built in the local directory with
 
 ```
-[default]
-aws_access_key_id = <YOUR_ACCESS_KEY_ID>
-aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
-```
-
-As an alternative you can set AWS credentials in the environment variables.
-
-The following examples show how you configure the environment variables.
-
-Linux, OS X, or Unix
-
-```
-export AWS_ACCESS_KEY_ID=YOUR_AKID
-export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
-```
-Windows
-
-```
-set AWS_ACCESS_KEY_ID=YOUR_AKID
-set AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
+go build -o sqsmover main.go
 ```
 
 ## Usage
@@ -60,26 +23,28 @@ set AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
 ```
 sqsmover --help
 
-usage: sqsmover.exe --source=SOURCE --destination=DESTINATION [<flags>]
+usage: ./sqsmover --source=SOURCE --destination=DESTINATION [<flags>]
 
 Flags:
       --help                     Show context-sensitive help (also try
                                  --help-long and --help-man).
   -s, --source=SOURCE            Source queue to move messages from
   -d, --destination=DESTINATION  Destination queue to move messages to
-  -r, --region="us-west-2"       AWS Region for source and destination queues
+  -r, --region="eu-west-1"       AWS Region for source and destination queues
 ```
+
+AWS credentials are automatically loaded from the ~/.aws/credentials file.
 
 Examples:
 
 Region will default to `us-west-2`, you can also override it with `--region` flag
 
 ```
-sqsmover --source=my_source_queue_name --destination=my_destination_queuename
-sqsmover --source=my_source_queue_name --destination=my_destination_queuename --region=eu-west-1
+./sqsmover --source=my_source_queue_name --destination=my_destination_queuename
+./sqsmover --source=my_source_queue_name --destination=my_destination_queuename --region=eu-west-1
 
 -- shorthand
-sqsmover -s my_source_queue_name -d my_destination_queuename -r eu-west-1
+./sqsmover -s my_source_queue_name -d my_destination_queuename -r eu-west-1
 ```
 
 
